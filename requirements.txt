@@ -1,0 +1,6 @@
+numpy
+tensorflow
+Pillow
+sciPy
+pathlib2
+imagaug
