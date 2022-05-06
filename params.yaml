@@ -1,0 +1,25 @@
+# This file.yaml is dedicated to store the hyperparameters for each stage of the train process
+# Includes parameters for each stage like: prepare, train, evaluate or whichever will be necessary
+# Each set of hyperparameters will be readed by the defined script
+# You can modify it to run a new pipeline (check the pipeline first to have a better performance)
+
+train:
+  # for dataset image generation #
+  num_classes: 2  #genuine, spoofing
+  image_size: 224
+  batch_size_training: 32
+  batch_size_validation: 16
+
+  # for dense layers (clasification block) #
+  mid_neurons: 1024
+  mid_activation: relu
+  drop_rate: 0.4
+  end_neurons: 2
+  end_activation: softmax
+
+  # for model training parameters #
+  class_mode: categorical
+  optimizer: adam
+  loss: categorical_crossentropy
+  metric: accuracy
+  number_epoch: 2
