@@ -5,7 +5,7 @@
 
 train:
   # for dataset image generation #
-  num_classes: 2  #genuine, spoofing
+  num_classes: 2  #cats, dogs
   image_size: 224
   batch_size_training: 32
   batch_size_validation: 16
