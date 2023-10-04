@@ -3,4 +3,5 @@ tensorflow
 Pillow
 sciPy
 pathlib2
-imagaug
+imgaug
+dvc

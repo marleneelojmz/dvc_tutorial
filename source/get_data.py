@@ -1,8 +1,11 @@
 import dvc.api
+import yaml
+
+params = yaml.safe_load(open("params.yaml"))["data_acquisition"]
 
 dvc.api.read(
-    'tutorials/versioning/data.zip',
-    repo = 'https://github.com/iterative/dataset-registry',
+    params['path'],
+    repo = params['repo'],
     #mode='r'
 )
 

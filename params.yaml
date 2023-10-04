@@ -2,6 +2,15 @@
 # Includes parameters for each stage like: prepare, train, evaluate or whichever will be necessary
 # Each set of hyperparameters will be readed by the defined script
 # You can modify it to run a new pipeline (check the pipeline first to have a better performance)
+data_acquisition:
+  # for data acquisition stage
+  path : 'tutorials/versioning/data.zip'
+  repo : 'https://github.com/iterative/dataset-registry'
+
+data_preprocess:
+  # for data preprocessing path
+  abspath : "data.zip"
+  images_path : "data/train/**/*"
 
 train:
   # for dataset image generation #
