@@ -5,3 +5,4 @@ sciPy
 pathlib2
 imgaug
 dvc
+scikit-learn
