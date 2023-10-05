@@ -12,6 +12,15 @@ data_preprocess:
   abspath : "data.zip"
   images_path : "data/train/**/*"
 
+data_augmentation:
+  # for data augmentation path 
+  images_path : "data/train/"
+  WithBrightnessChannels : [-50, 50]
+  ChangeColorTemperature : [1100, 10000]
+  AddToSaturation : [-40, 40]
+  RemoveSaturation_mul: 0.25
+  MotionBlur_k : 3
+
 train:
   # for dataset image generation #
   num_classes: 2  #cats, dogs
