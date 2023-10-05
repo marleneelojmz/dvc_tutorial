@@ -41,3 +41,7 @@ train:
   loss: categorical_crossentropy
   metric: accuracy
   number_epoch: 2
+
+  #for paths
+  abspath_data : "data"
+  best_model_path : 'model/model_catdog.h5'

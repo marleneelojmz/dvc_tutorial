@@ -38,9 +38,11 @@ data/
             ...
 ```
 '''
-import numpy as np
 import sys
 import os
+import argparse
+import numpy as np
+from typing import Text
 
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.models import Sequential
@@ -50,21 +52,22 @@ from tensorflow.keras import applications
 from tensorflow.keras.callbacks import CSVLogger, EarlyStopping
 import yaml
 
-#pathname = os.path.dirname(sys.argv[0])
-path = os.path.abspath("data")
 
-# dimensions of our images.
-best_model_path = 'model/model_catdog.h5'
-train_data_dir = os.path.join(path, 'train')
-validation_data_dir = os.path.join(path,'validation')
-
-params = yaml.safe_load(open("params.yaml"))["train"]
-
-def train_model():
+def train_model(config_path: Text) -> None:
     """ This function to establish the network arquitecture
         Using the keras vgg16 pretrained layers and creating
         the classification final block.
     """
+    params = yaml.safe_load(open(config_path))["train"]
+
+    path = os.path.abspath(params['abspath_data'])
+
+    # dimensions of our images.
+    best_model_path = params['best_model_path']
+    train_data_dir = os.path.join(path, 'train')
+    validation_data_dir = os.path.join(path,'validation')
+
+
     data_gen_args = dict(
         horizontal_flip=True,
         vertical_flip=True,
@@ -161,4 +164,9 @@ def train_model():
     model.save(best_model_path)
 
 
-train_model()
+if __name__ == '__main__':
+    args_parser = argparse.ArgumentParser()
+    args_parser.add_argument('--params', dest='params', required=True)
+    args = args_parser.parse_args()
+
+    train_model(config_path=args.params)

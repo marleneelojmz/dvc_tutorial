@@ -12,6 +12,15 @@ import imgaug.augmenters as iaa
 
  ##------- 2.Define the data_augmentation function ----------##
 def data_aug(image_name,n_aug,indx,seq): 
+        '''His funtion will help us to read each image  and apply a number of certain augmentation techniques
+
+            1. Brigthness
+            2. Color Temperature
+            3. Saturation
+            4. Blur
+
+            Will save all the augmentations in the selected folder
+        '''
         img = Image.open(image_name)
         aug_c = random.sample(seq,n_aug)
         middle_name = image_name.split(".")
