@@ -1,0 +1,130 @@
+schema: '2.0'
+stages:
+  data_acquisition:
+    cmd: python source/get_data.py --params=params.yaml
+    deps:
+    - path: params.yaml
+      hash: md5
+      md5: e01a23c82cf40566456e8f049158dc5d
+      size: 1425
+    - path: source/get_data.py
+      hash: md5
+      md5: 92fbf740c31eb570465d61cfa1266479
+      size: 889
+    params:
+      params.yaml:
+        data_acquisition:
+          path: tutorials/versioning/data.zip
+          repo: https://github.com/iterative/dataset-registry
+    outs:
+    - path: data.zip
+      hash: md5
+      md5: fa9c0eb4173d86695b4e800219651360
+      size: 41122310
+  data_preprocess:
+    cmd: python source/data_preprocess.py --params=params.yaml
+    deps:
+    - path: params.yaml
+      hash: md5
+      md5: e01a23c82cf40566456e8f049158dc5d
+      size: 1425
+    - path: source/data_preprocess.py
+      hash: md5
+      md5: c6d36ebcb359981a765080552baa005a
+      size: 1748
+    params:
+      params.yaml:
+        data_preprocess:
+          abspath: data.zip
+          images_path: data/train/**/*
+    outs:
+    - path: data/
+      hash: md5
+      md5: 74bbd3990683af1f54296de578e21c23.dir
+      size: 41149064
+      nfiles: 1800
+  data_augmentation:
+    cmd: python source/data_augmentation.py --params=params.yaml
+    deps:
+    - path: params.yaml
+      hash: md5
+      md5: e01a23c82cf40566456e8f049158dc5d
+      size: 1425
+    - path: source/data_augmentation.py
+      hash: md5
+      md5: 694a8a8d2c425890b14d8c06cf1a1d8b
+      size: 2721
+    params:
+      params.yaml:
+        data_augmentation:
+          images_path: data/train/
+          WithBrightnessChannels:
+          - -50
+          - 50
+          ChangeColorTemperature:
+          - 1100
+          - 10000
+          AddToSaturation:
+          - -40
+          - 40
+          RemoveSaturation_mul: 0.25
+          MotionBlur_k: 3
+  train:
+    cmd: python source/train.py --params=params.yaml
+    deps:
+    - path: params.yaml
+      hash: md5
+      md5: e01a23c82cf40566456e8f049158dc5d
+      size: 1425
+    - path: source/train.py
+      hash: md5
+      md5: 2e1f71cd0ee89d37a675cad320cb7bc2
+      size: 5397
+    params:
+      params.yaml:
+        train:
+          num_classes: 2
+          image_size: 224
+          batch_size_training: 32
+          batch_size_validation: 16
+          mid_neurons: 1024
+          mid_activation: relu
+          drop_rate: 0.4
+          end_neurons: 2
+          end_activation: softmax
+          class_mode: categorical
+          optimizer: adam
+          loss: categorical_crossentropy
+          metric: accuracy
+          number_epoch: 2
+          abspath_data: data
+          best_model_path: model/model_catdog.h5
+    outs:
+    - path: model/model_catdog.h5
+      hash: md5
+      md5: ab251a0369ba5a4facac870d08a348ef
+      size: 77868360
+  evaluate:
+    cmd: python source/evaluate.py model/model_catdog.h5 scores.json prc.json roc.json
+    deps:
+    - path: model/model_catdog.h5
+      hash: md5
+      md5: ab251a0369ba5a4facac870d08a348ef
+      size: 77868360
+    - path: source/evaluate.py
+      hash: md5
+      md5: abceda994f45700c90b9342abe5f0767
+      size: 3148
+    outs:
+    - path: prc.json
+      hash: md5
+      md5: dd8db82087b81c5fcb96901cfd6310fe
+      size: 2431
+    - path: roc.json
+      hash: md5
+      md5: 12b2505055f227cb66f942c8c1b52683
+      size: 496
+    - path: scores.json
+      hash: md5
+      md5: 59b01198079a573ab63709b6d369f957
+      size: 146

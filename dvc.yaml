@@ -1,0 +1,51 @@
+stages :
+  data_acquisition :
+    cmd : python source/get_data.py --params=params.yaml
+    deps :
+    - source/get_data.py
+    - params.yaml
+    params :
+    - data_acquisition
+    outs :
+    - data.zip
+
+  data_preprocess :
+    cmd : python source/data_preprocess.py --params=params.yaml
+    deps :
+    - source/data_preprocess.py
+    - params.yaml
+    params :
+    - data_preprocess
+    outs :
+    - data/
+
+  data_augmentation :
+    cmd : python source/data_augmentation.py --params=params.yaml
+    deps : 
+    - data/
+    - source/data_augmentation.py
+    - params.yaml 
+    params :
+    - data_augmentation
+
+  train :
+    cmd : python source/train.py --params=params.yaml
+    deps :
+    - source/train.py
+    - params.yaml
+    params :
+    - train
+    outs :
+    - model/model_catdog.h5
+
+  evaluate :
+    cmd : python source/evaluate.py model/model_catdog.h5 scores.json prc.json roc.json
+    deps :
+    - source/evaluate.py
+    - model/model_catdog.h5
+    outs :
+    - scores.json 
+    - prc.json
+    - roc.json
+
+  
