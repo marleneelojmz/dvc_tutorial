@@ -16,8 +16,6 @@ stages :
     - params.yaml
     params :
     - data_preprocess
-    # outs :
-    # - data/
 
   data_augmentation :
     cmd : python source/data_augmentation.py --params=params.yaml

@@ -31,7 +31,7 @@ train:
   # for dense layers (clasification block) #
   mid_neurons: 1024
   mid_activation: relu
-  drop_rate: 0.4
+  drop_rate: 0.2
   end_neurons: 2
   end_activation: softmax
 
