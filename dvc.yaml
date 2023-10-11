@@ -16,8 +16,8 @@ stages :
     - params.yaml
     params :
     - data_preprocess
-    outs :
-    - data/
+    # outs :
+    # - data/
 
   data_augmentation :
     cmd : python source/data_augmentation.py --params=params.yaml
@@ -27,6 +27,8 @@ stages :
     - params.yaml 
     params :
     - data_augmentation
+    outs : 
+    - data_aug.zip
 
   train :
     cmd : python source/train.py --params=params.yaml

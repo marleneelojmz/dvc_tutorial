@@ -46,14 +46,19 @@ stages:
   data_augmentation:
     cmd: python source/data_augmentation.py --params=params.yaml
     deps:
+    - path: data/
+      hash: md5
+      md5: d751713988987e9331980363e24189ce.dir
+      size: 0
+      nfiles: 0
     - path: params.yaml
       hash: md5
       md5: e01a23c82cf40566456e8f049158dc5d
       size: 1425
     - path: source/data_augmentation.py
       hash: md5
-      md5: 694a8a8d2c425890b14d8c06cf1a1d8b
-      size: 2721
+      md5: fca3f5db90e316cd712205a4a78ab536
+      size: 2818
     params:
       params.yaml:
         data_augmentation:
@@ -69,6 +74,11 @@ stages:
           - 40
           RemoveSaturation_mul: 0.25
           MotionBlur_k: 3
+    outs:
+    - path: data_aug.zip
+      hash: md5
+      md5: 9b9889aef11da2b37e73418573aa0caf
+      size: 41115067
   train:
     cmd: python source/train.py --params=params.yaml
     deps:

@@ -3,6 +3,7 @@
 """
 import os
 import yaml
+import shutil
 import random
 import argparse
 import numpy as np
@@ -63,6 +64,9 @@ def data_augmentation(config_path: Text) -> None:
                 indx+=n_aug
                 break
     print('hecho!')
+
+    shutil.make_archive('data_aug','zip','./data/')
+    print('zip generado')
 
 if __name__ == '__main__':
     args_parser = argparse.ArgumentParser()
