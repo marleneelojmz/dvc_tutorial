@@ -40,6 +40,7 @@ data/
 '''
 import sys
 import os
+import json
 import argparse
 import numpy as np
 import pandas as pd
@@ -150,7 +151,7 @@ def train_model(config_path: Text) -> None:
     steps_per_epoch_valid = len(validation_generator)
     number_epoch = params["number_epoch"]
 
-    my_callbacks = [EarlyStopping(patience=2), CSVLogger("metrics.csv")]
+    my_callbacks = [EarlyStopping(patience=2)]#, CSVLogger("history.csv")]
 
     history = model.fit(
         train_generator,
@@ -164,12 +165,20 @@ def train_model(config_path: Text) -> None:
 
     # saving the history to metrics step
     # convert the history.history dict to a pandas DataFrame:     
-    hist_df = pd.DataFrame(history.history) 
+    metrics_raw = history.history
+    metric = dict()
 
-    # save to json:  
+    metric['accuracy'] = metrics_raw['accuracy'][-1]
+    metric['loss'] = metrics_raw['loss'][-1]
+    metric['val_accuracy'] = metrics_raw['val_accuracy'][-1]
+    # save to json:
     hist_json_file = 'history.json' 
     with open(hist_json_file, mode='w') as f:
-        hist_df.to_json(f)
+        json.dump(metrics_raw,f)
+
+    hist_json_file = 'metrics.json' 
+    with open(hist_json_file, mode='w') as f:
+        json.dump(metric,f)
 
     model.save(best_model_path)
 

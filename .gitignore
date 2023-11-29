@@ -2,3 +2,10 @@ venv/*
 data/*
 data.zip
 source/__pycache__
+/data.zip
+/data_aug.zip
+/scores.json
+/prc.json
+/roc.json
+model/*
+/history.csv

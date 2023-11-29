@@ -40,19 +40,23 @@ stages :
     outs :
     - model/model_catdog.h5
     metrics :
-    - history.json:
-        cache: false
-    - metrics.csv:
-        cache: false
+    - metrics.json :
+        cache : false
+    plots :
+    - history.json
 
   evaluate :
     cmd : python source/evaluate.py model/model_catdog.h5 scores.json prc.json roc.json
     deps :
     - source/evaluate.py
     - model/model_catdog.h5
-    outs :
-    - scores.json 
-    - prc.json
-    - roc.json
+    metrics :
+    - scores.json:
+        cache: false
+    plots:
+    - prc.json : 
+        cache: false
+    - roc.json:
+        cache: false
 
   
