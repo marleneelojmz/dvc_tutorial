@@ -39,11 +39,12 @@ stages :
     - train
     outs :
     - model/model_catdog.h5
+    - history.json
     metrics :
     - metrics.json :
         cache : false
     plots :
-    - history.json
+    - history.csv
 
   evaluate :
     cmd : python source/evaluate.py model/model_catdog.h5 scores.json prc.json roc.json

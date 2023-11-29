@@ -44,11 +44,13 @@ def data_preprocess(config_path: Text) -> None:
 
     # Move form data/train to data/test
     for image in validation_set:
-        new_name = image.replace("train","test")
-        print(image)
-        print(new_name)
-        shutil.move(image,new_name)
-
+        try:
+            new_name = image.replace("train","test")
+            print(image)
+            print(new_name)
+            shutil.move(image,new_name)
+        except Exception:
+            print(f'Image {image} not founded!')
 if __name__ == '__main__':
     args_parser = argparse.ArgumentParser()
     args_parser.add_argument('--params', dest='params', required=True)

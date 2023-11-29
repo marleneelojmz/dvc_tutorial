@@ -40,7 +40,7 @@ train:
   optimizer: adam
   loss: categorical_crossentropy
   metric: accuracy
-  number_epoch: 3
+  number_epoch: 10
 
   #for paths
   abspath_data : "data"

@@ -151,7 +151,7 @@ def train_model(config_path: Text) -> None:
     steps_per_epoch_valid = len(validation_generator)
     number_epoch = params["number_epoch"]
 
-    my_callbacks = [EarlyStopping(patience=2)]#, CSVLogger("history.csv")]
+    my_callbacks = [EarlyStopping(patience=2), CSVLogger("history.csv")]
 
     history = model.fit(
         train_generator,
