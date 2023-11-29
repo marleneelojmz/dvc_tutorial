@@ -16,6 +16,8 @@ stages :
     - params.yaml
     params :
     - data_preprocess
+    #outs :
+    #- data/
 
   data_augmentation :
     cmd : python source/data_augmentation.py --params=params.yaml
@@ -37,6 +39,11 @@ stages :
     - train
     outs :
     - model/model_catdog.h5
+    metrics :
+    - history.json:
+        cache: false
+    - metrics.csv:
+        cache: false
 
   evaluate :
     cmd : python source/evaluate.py model/model_catdog.h5 scores.json prc.json roc.json

@@ -37,14 +37,20 @@ stages:
         data_preprocess:
           abspath: data.zip
           images_path: data/train/**/*
+    outs:
+    - path: data/
+      hash: md5
+      md5: 9284a60da9e327917bc0fa8c9a7bf1a7.dir
+      size: 41149064
+      nfiles: 1800
   data_augmentation:
     cmd: python source/data_augmentation.py --params=params.yaml
     deps:
     - path: data/
       hash: md5
-      md5: d751713988987e9331980363e24189ce.dir
-      size: 0
-      nfiles: 0
+      md5: 36e9532e512085a731ff56e86a1d63ac.dir
+      size: 41231043
+      nfiles: 1804
     - path: params.yaml
       hash: md5
       md5: 5c89dcd26768bfab4fd8938d89d38b8b
@@ -71,19 +77,19 @@ stages:
     outs:
     - path: data_aug.zip
       hash: md5
-      md5: b77b241d528b80d60d28e6ed201f6ae9
-      size: 41122174
+      md5: a921a4546e9186f63bddfccc283420fc
+      size: 41117909
   train:
     cmd: python source/train.py --params=params.yaml
     deps:
     - path: params.yaml
       hash: md5
-      md5: 5c89dcd26768bfab4fd8938d89d38b8b
+      md5: bec639807937633a0bc5954d714371b7
       size: 1425
     - path: source/train.py
       hash: md5
-      md5: 2e1f71cd0ee89d37a675cad320cb7bc2
-      size: 5397
+      md5: 40560a0359a0311da28f646bf21de69f
+      size: 5724
     params:
       params.yaml:
         train:
@@ -100,20 +106,24 @@ stages:
           optimizer: adam
           loss: categorical_crossentropy
           metric: accuracy
-          number_epoch: 2
+          number_epoch: 3
           abspath_data: data
           best_model_path: model/model_catdog.h5
     outs:
+    - path: history.json
+      hash: md5
+      md5: 49fbdb439bf5ec4bd00707453faf2468
+      size: 257
     - path: model/model_catdog.h5
       hash: md5
-      md5: 02dcebbb1bd8f0a0693b630813eb9ff3
+      md5: 7966e9f1045086b2b5537e400e1862cc
       size: 77868360
   evaluate:
     cmd: python source/evaluate.py model/model_catdog.h5 scores.json prc.json roc.json
     deps:
     - path: model/model_catdog.h5
       hash: md5
-      md5: 02dcebbb1bd8f0a0693b630813eb9ff3
+      md5: 813ade5d37a11cf7a33b589ea597a34a
       size: 77868360
     - path: source/evaluate.py
       hash: md5
@@ -122,13 +132,13 @@ stages:
     outs:
     - path: prc.json
       hash: md5
-      md5: d8b060edd8edfbe6204fc4b56e24c2ec
-      size: 3068
+      md5: c9802a3a13df4f4c91f6a405193f9e4c
+      size: 2674
     - path: roc.json
       hash: md5
-      md5: 6a4580b6cf3ca2ab9e91c172c017bbfa
-      size: 475
+      md5: a538d2adc6af2f7c6f3e99ffcef0b3eb
+      size: 489
     - path: scores.json
       hash: md5
-      md5: 1410f408c4acee435c6aebcedcb3ad7f
-      size: 117
+      md5: dc455f31f34e050395468764b5175d02
+      size: 116

@@ -1,8 +1,10 @@
 numpy
-tensorflow
+tensorflow==2.10
 Pillow
+pandas
 sciPy
 pathlib2
 imgaug
 dvc
+dvc-gdrive
 scikit-learn

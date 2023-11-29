@@ -42,6 +42,7 @@ import sys
 import os
 import argparse
 import numpy as np
+import pandas as pd
 from typing import Text
 
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
@@ -151,7 +152,7 @@ def train_model(config_path: Text) -> None:
 
     my_callbacks = [EarlyStopping(patience=2), CSVLogger("metrics.csv")]
 
-    model.fit(
+    history = model.fit(
         train_generator,
         steps_per_epoch=steps_per_epoch_train,
         epochs=number_epoch,
@@ -160,6 +161,15 @@ def train_model(config_path: Text) -> None:
         validation_steps=steps_per_epoch_valid,
         callbacks=my_callbacks,
     )
+
+    # saving the history to metrics step
+    # convert the history.history dict to a pandas DataFrame:     
+    hist_df = pd.DataFrame(history.history) 
+
+    # save to json:  
+    hist_json_file = 'history.json' 
+    with open(hist_json_file, mode='w') as f:
+        hist_df.to_json(f)
 
     model.save(best_model_path)
 
