@@ -1,63 +1,67 @@
-stages :
-  data_acquisition :
-    cmd : python source/get_data.py --params=params.yaml
-    deps :
+stages:
+  data_acquisition:
+    cmd: python source/get_data.py --params=params.yaml
+    deps:
     - source/get_data.py
     - params.yaml
-    params :
+    params:
     - data_acquisition
-    outs :
+    outs:
     - data.zip
 
-  data_preprocess :
-    cmd : python source/data_preprocess.py --params=params.yaml
-    deps :
+  data_preprocess:
+    cmd: python source/data_preprocess.py --params=params.yaml
+    deps:
     - source/data_preprocess.py
     - params.yaml
-    params :
+    params:
     - data_preprocess
     #outs :
     #- data/
 
-  data_augmentation :
-    cmd : python source/data_augmentation.py --params=params.yaml
-    deps : 
+  data_augmentation:
+    cmd: python source/data_augmentation.py --params=params.yaml
+    deps:
     - data/
     - source/data_augmentation.py
-    - params.yaml 
-    params :
+    - params.yaml
+    params:
     - data_augmentation
-    outs : 
+    outs:
     - data_aug.zip
 
-  train :
-    cmd : python source/train.py --params=params.yaml
-    deps :
+  train:
+    cmd: python source/train.py --params=params.yaml
+    deps:
     - source/train.py
     - params.yaml
-    params :
+    params:
     - train
-    outs :
+    outs:
     - model/model_catdog.h5
-    - history.json
-    metrics :
-    - metrics.json :
-        cache : false
-    plots :
+    #- dvclive
+    metrics:
+    - metrics.json:
+        cache: false
+    plots:
     - history.csv
 
-  evaluate :
-    cmd : python source/evaluate.py model/model_catdog.h5 scores.json prc.json roc.json
-    deps :
+  evaluate:
+    cmd: python source/evaluate.py model/model_catdog.h5 scores.json prc.json roc.json
+    deps:
     - source/evaluate.py
     - model/model_catdog.h5
-    metrics :
+    metrics:
     - scores.json:
         cache: false
     plots:
-    - prc.json : 
+    - prc.json:
         cache: false
     - roc.json:
         cache: false
 
-  
+metrics:
+- metrics/metrics.json
+plots:
+- metrics/plots/metrics:
+    x: step

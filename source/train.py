@@ -41,10 +41,13 @@ data/
 import sys
 import os
 import json
+import yaml
 import argparse
 import numpy as np
 import pandas as pd
 from typing import Text
+from dvclive import Live
+from dvclive.keras import DVCLiveCallback
 
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.models import Sequential
@@ -52,7 +55,7 @@ from tensorflow.keras.layers import Dense, Flatten, Dropout
 from tensorflow.keras.applications.vgg16 import VGG16, preprocess_input
 from tensorflow.keras import applications
 from tensorflow.keras.callbacks import CSVLogger, EarlyStopping
-import yaml
+
 
 
 def train_model(config_path: Text) -> None:
@@ -151,17 +154,18 @@ def train_model(config_path: Text) -> None:
     steps_per_epoch_valid = len(validation_generator)
     number_epoch = params["number_epoch"]
 
-    my_callbacks = [EarlyStopping(patience=2), CSVLogger("history.csv")]
+    #my_callbacks = [EarlyStopping(patience=2), CSVLogger("history.csv")]
 
-    history = model.fit(
-        train_generator,
-        steps_per_epoch=steps_per_epoch_train,
-        epochs=number_epoch,
-        verbose=1,
-        validation_data=validation_generator,
-        validation_steps=steps_per_epoch_valid,
-        callbacks=my_callbacks,
-    )
+    with Live('metrics/') as live:
+        history = model.fit(
+            train_generator,
+            steps_per_epoch=steps_per_epoch_train,
+            epochs=number_epoch,
+            verbose=1,
+            validation_data=validation_generator,
+            validation_steps=steps_per_epoch_valid,
+            callbacks=[DVCLiveCallback(live=live)]
+        )
 
     # saving the history to metrics step
     # convert the history.history dict to a pandas DataFrame:     
