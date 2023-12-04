@@ -9,6 +9,9 @@ from keras.models import load_model
 from tensorflow.keras.applications.vgg16 import preprocess_input
 from keras.preprocessing.image import ImageDataGenerator
 from sklearn import metrics
+from dvclive import Live
+
+dvclive = Live()
 
 if len(sys.argv) != 5:  
     # Lets validate the correct usage of the script,
@@ -71,6 +74,11 @@ with open(scores_file, "w") as fd:
         indent=4,
     )
 
+dvclive.log_metric("avg_prec", avg_prec)
+dvclive.log_metric("roc_auc", roc_auc)
+dvclive.log_metric("accuracy", test_history[1])
+dvclive.log_metric("loss", test_history[0])
+
 # Saving ROC values obtained for the evaluated model
 # ROC has a drop_intermediate arg that reduces the number of points
 # https://scikit-learn.org/stable/modules/generated/sklearn.metrics.roc_curve.html
@@ -81,6 +89,8 @@ nth_point = math.ceil(len(prc_thresholds) / 1000)
 prc_points = list(zip(precision, recall, prc_thresholds))[::nth_point]
 
 print(prc_points)
+
+datapoints = [{'precision' : i_precision,'recall' : i_recall} for i_precision,i_recall in zip(precision, recall)]
 
 
 with open(prc_file, "w") as fd:
@@ -96,6 +106,14 @@ with open(prc_file, "w") as fd:
         indent=4,
     )
 
+dvclive.log_plot('Precision_Recall_Metric',
+                 datapoints,
+                 x = 'precision',
+                 y = 'recall',
+                 template = 'linear',
+                 title = 'Precision / Recall metric thorught Threshold modif.'
+                 )
+
 with open(roc_file, "w") as fd:
     json.dump(
         {
@@ -107,3 +125,18 @@ with open(roc_file, "w") as fd:
         fd,
         indent=4,
     )
+
+datapoints = [{'FPR' : i_fpr,'TPR' : i_tpr} for i_fpr,i_tpr in zip(fpr, tpr)]
+
+dvclive.log_plot('ROC_Curve',
+                 datapoints,
+                 x = 'FPR',
+                 y = 'TPR',
+                 template = 'linear',
+                 title = 'ROC Curve'
+                 )
+
+
+#dvclive.log_plot("fpr", fpr)
+#dvclive.log_plot("tpr", tpr)
+#dvclive.log_plot("threshold", roc_thresholds)

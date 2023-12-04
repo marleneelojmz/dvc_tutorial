@@ -10,3 +10,4 @@ source/__pycache__
 model/*
 /history.csv
 /history.json
+/file.txt
