@@ -39,12 +39,9 @@ stages:
     - train
     outs:
     - model/model_catdog.h5
-    #- dvclive
     metrics:
     - metrics.json:
         cache: false
-    plots:
-    - history.csv
 
   evaluate:
     cmd: python source/evaluate.py model/model_catdog.h5 scores.json prc.json roc.json
@@ -54,14 +51,25 @@ stages:
     metrics:
     - scores.json:
         cache: false
-    plots:
-    - prc.json:
-        cache: false
-    - roc.json:
-        cache: false
+
 
 metrics:
 - metrics/metrics.json
 plots:
+- dvclive/plots/custom/Precision_Recall_Metric.json:
+    template: linear
+    x: precision
+    y: recall
+    title: Precision / Recall metric.
+    x_label: precision
+    y_label: recall
+- dvclive/plots/custom/ROC_Curve.json:
+    template: linear
+    x: FPR
+    y: TPR
+    title: ROC CURVE
+    x_label: FPR
+    y_label: TPR
+
 - metrics/plots/metrics:
     x: step
